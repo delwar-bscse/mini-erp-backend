@@ -1,0 +1,45 @@
+name: Trkil-Backend CI/CD
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    defaults:
+      run:
+        working-directory: /home/user/trkli-runner/_work/trkil-tracking-app-backend/trkil-tracking-app-backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install PM2 globally
+        run: npm install -g pm2
+
+      - name: Install dependencies with Yarn
+        run: yarn install --frozen-lockfile
+
+      - name: restart the project with PM2
+        run: |
+          if pm2 describe server > /dev/null; then
+            pm2 restart server --update-env
+          else
+            pm2 start yarn --name server -- run start
+          fi
+
+      - name: Save PM2 process list
+        run: pm2 save

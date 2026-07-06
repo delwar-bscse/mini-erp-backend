@@ -1,0 +1,84 @@
+import { StatusCodes } from "http-status-codes";
+import { ICategory } from "./category.interface";
+import { CategoryModel } from "./category.model";
+import ApiError from "../../../errors/ApiErrors";
+import QueryBuilder from "../../../helpers/QueryBuilder";
+
+//create category
+const createCategoryToDB = async (
+  payload: Partial<ICategory>,
+): Promise<any> => {
+  const isExistCategory = await CategoryModel.findOne({ name: payload.name });
+
+  if (isExistCategory) {
+    return "Category already exist!";
+  }
+
+  const res = await CategoryModel.create(payload);
+
+  return res;
+};
+
+//get category
+const getCategoryFromDB = async (id: string): Promise<ICategory> => {
+  const isExistCategory = await CategoryModel.findById(id);
+  if (!isExistCategory) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Category doesn't exist!");
+  }
+
+  return isExistCategory;
+};
+
+//get categories
+const getCategoriesFromDB = async (
+  filterOptions: Record<string, unknown>,
+): Promise<any> => {
+  const query: Record<string, unknown> = {
+    ...filterOptions,
+  };
+
+  const searchableFields = ["name"];
+
+  const builder = new QueryBuilder<ICategory>(CategoryModel.find(), query);
+
+  const usersQuery = builder.search(searchableFields).paginate();
+
+  const data = await usersQuery.modelQuery.lean();
+  const meta = await usersQuery.getPaginationInfo();
+
+  return { data, meta };
+};
+
+//update category
+const updateCategoryToDB = async (
+  payload: Partial<ICategory>,
+  id: string,
+): Promise<string> => {
+  const isExistCategory = await CategoryModel.findById(id);
+
+  if (!isExistCategory) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Category doesn't exist!");
+  }
+
+  await CategoryModel.findOneAndUpdate({ _id: id }, payload);
+
+  return "Category updated successfully!";
+};
+
+//update category
+const deleteCategoryToDB = async (id: string): Promise<string> => {
+  const isExistCategory = await CategoryModel.findByIdAndDelete(id);
+  if (!isExistCategory) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Category doesn't exist!");
+  }
+
+  return "Category deleted successfully!";
+};
+
+export const CategoryService = {
+  createCategoryToDB,
+  getCategoryFromDB,
+  getCategoriesFromDB,
+  updateCategoryToDB,
+  deleteCategoryToDB,
+};
