@@ -1,21 +1,25 @@
-import { IContactSupport, ICreateAccount, IResetPassword } from '../types/emailTemplate';
+import {
+  IContactSupport,
+  ICreateAccount,
+  IResetPassword,
+} from "../types/emailTemplate";
 
 const createAccount = (values: ICreateAccount) => {
-    const data = {
-        to: values.email,
-        subject: 'Verify your account',
-        html: `
+  const data = {
+    to: values.email,
+    subject: "Verify your account",
+    html: `
             <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 50px; padding: 20px; color: #555;">
                 <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
     
                     <!-- Logo -->
-                    <img src="https://res.cloudinary.com/dbq7y6byo/image/upload/v1752306237/logos/logo.png" alt="Dropzy Logo" style="display: block; margin: 0 auto 20px; width:150px" />
+                    <img src="https://res.cloudinary.com/dbq7y6byo/image/upload/v1752306237/logos/logo.png" alt="Mini ERP Logo" style="display: block; margin: 0 auto 20px; width:150px" />
 
                     <!-- Greeting -->
                     <h2 style="color: #D0A933; font-size: 24px; margin-bottom: 20px;">Hey, ${values.name}!</h2>
 
                     <!-- Verification Instructions -->
-                    <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Thank you for signing up for Dropzy. Please verify your email address to activate your account.</p>
+                    <p style="color: #555; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">Thank you for signing up for Mini ERP. Please verify your email address to activate your account.</p>
 
                     <!-- OTP Section -->
                     <div style="text-align: center;">
@@ -25,22 +29,22 @@ const createAccount = (values: ICreateAccount) => {
                     </div>
 
                     <!-- Footer -->
-                    <p style="color: #999; font-size: 12px; text-align: center; margin-top: 30px;">If you did not sign up for Dropzy, please ignore this email.</p>
-                    <p style="color: #999; font-size: 12px; text-align: center;">&copy; 2026 Dropzy. All rights reserved.</p>
+                    <p style="color: #999; font-size: 12px; text-align: center; margin-top: 30px;">If you did not sign up for Mini ERP, please ignore this email.</p>
+                    <p style="color: #999; font-size: 12px; text-align: center;">&copy; 2026 Mini ERP. All rights reserved.</p>
 
                 </div>
             </body>
-        `
-    }
+        `,
+  };
 
-    return data;
-}
+  return data;
+};
 
 const resetPassword = (values: IResetPassword) => {
-    const data = {
-        to: values.email,
-        subject: 'Reset your password',
-        html: `
+  const data = {
+    to: values.email,
+    subject: "Reset your password",
+    html: `
             <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 50px; padding: 20px; color: #555;">
                 <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                     <img src="https://res.cloudinary.com/dbq7y6byo/image/upload/v1752306237/logos/logo.png" alt="Logo" style="display: block; margin: 0 auto 20px; width:150px" />
@@ -52,16 +56,15 @@ const resetPassword = (values: IResetPassword) => {
                 </div>
             </body>
         `,
-    };
-    return data;
+  };
+  return data;
 };
 
-
 const resendOtp = (values: IResetPassword) => {
-    const data = {
-        to: values.email,
-        subject: 'Resend OTP',
-        html: `
+  const data = {
+    to: values.email,
+    subject: "Resend OTP",
+    html: `
             <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 50px; padding: 20px; color: #555;">
                 <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                     <img src="https://res.cloudinary.com/dbq7y6byo/image/upload/v1752306237/logos/logo.png" alt="Logo" style="display: block; margin: 0 auto 20px; width:150px" />
@@ -73,16 +76,15 @@ const resendOtp = (values: IResetPassword) => {
                 </div>
             </body>
         `,
-    };
-    return data;
+  };
+  return data;
 };
 
 const contactSupport = (values: IContactSupport) => {
   const data = {
     to: values.email,
     subject: values.sub,
-    html:
-      `<body style="font-family: Arial, sans-serif; margin: 50px; padding: 20px; color: #555;">
+    html: `<body style="font-family: Arial, sans-serif; margin: 50px; padding: 20px; color: #555;">
         <div style=" background-color: #fff;">
             <p style="color: #555; font-size: 12px; line-height: 1.5; margin-bottom: 20px;">${values.msg}</p></br>
             <p style="color: #555; font-size: 12px; line-height: 1.5; margin-bottom: 20px;"><b>Admin Reply : </b>${values.reply}</p>
@@ -93,8 +95,8 @@ const contactSupport = (values: IContactSupport) => {
 };
 
 export const emailTemplate = {
-    createAccount,
-    resetPassword,
-    resendOtp,
-    contactSupport
+  createAccount,
+  resetPassword,
+  resendOtp,
+  contactSupport,
 };
