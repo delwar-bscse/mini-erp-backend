@@ -19,17 +19,13 @@ router.post(
 );
 
 router.post(
-  "/verify-email",
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { email, oneTimeCode } = req.body;
+  "/resend-otp",
+  validateRequest(AuthValidation.createForgetPasswordZodSchema),
+  AuthController.forgetPassword,
+);
 
-      req.body = { email, oneTimeCode: Number(oneTimeCode) };
-      next();
-    } catch (error) {
-      res.status(500).json({ message: "Failed to convert string to number" });
-    }
-  },
+router.post(
+  "/verify-email",
   validateRequest(AuthValidation.createVerifyEmailZodSchema),
   AuthController.verifyEmail,
 );
